@@ -42,7 +42,15 @@ export default {
   methods: {
     addPhone() {
       if (this.$refs.form.validate()) {
-        this.$store.dispatch("addPhone", this.inputText);
+        this.$store.dispatch("checkVariants", this.inputText)
+          .then(res => {
+            if (res.empty)
+              this.$store.dispatch("addPhone", this.inputText);
+            else 
+              this.$noty.error("Ошибка! Номер уже занят");
+          }).catch(() => {
+              this.$noty.error("Ошибка! Номер не добавлен. Попробуйте позже");
+          });
       }
     },
     back() {

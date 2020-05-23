@@ -55,7 +55,15 @@ export default {
   methods: {
     updatePhone() {
       if (this.$refs.form.validate()) {
-        this.$store.dispatch("updatePhone", { id: this.phone.id, name: this.inputText});
+        this.$store.dispatch("checkVariants", this.inputText)
+          .then(res => {
+            if (res.empty || this.phone.name == this.inputText)
+              this.$store.dispatch("updatePhone", { id: this.phone.id, name: this.inputText});
+            else 
+              this.$noty.error("Ошибка! Номер уже занят");
+          }).catch(() => {
+              this.$noty.error("Ошибка! Номер не изменен. Попробуйте позже");
+          });
       }
     },
     back() {

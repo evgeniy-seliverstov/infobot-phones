@@ -46,7 +46,7 @@ export default new Vuex.Store({
           Vue.noty.success("Номер успешно удален");
         })
         .catch(() => {
-          Vue.noty.success("Ошибка! Номер не удален. Попробуйте позже");
+          Vue.noty.error("Ошибка! Номер не удален. Попробуйте позже");
         })
     },
     getPhoneById({commit}, id) {
@@ -65,8 +65,11 @@ export default new Vuex.Store({
           router.go(-1);
         })
         .catch(() => {
-          Vue.noty.success("Ошибка! Номер не изменен. Попробуйте позже");
+          Vue.noty.error("Ошибка! Номер не изменен. Попробуйте позже");
         })
+    },
+    checkVariants({state}, phone) {
+      return db.collection(collection).where('name', '==', phone).get();
     }
   }
 })
